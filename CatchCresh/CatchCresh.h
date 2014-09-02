@@ -8,7 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol crashDelegate <NSObject>
+
+- (void)catchException:(NSException*)exception;
+
+@end
+
 @interface CatchCresh : NSObject
 
-+ (void)crashCatch;
++ (void)crashCatchWithDeleate:(NSObject<crashDelegate>*)delegate;
 @end

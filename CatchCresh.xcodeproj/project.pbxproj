@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AAAC4B7019B5AD5500BDE356 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAC4B6F19B5AD5500BDE356 /* Test.m */; };
 		AAADFB9D19A195CD00E9B44E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA954A7199C8145009E7170 /* Foundation.framework */; };
 		AAADFBA219A195CD00E9B44E /* CatchCresh.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAADFBA119A195CD00E9B44E /* CatchCresh.h */; };
 		AAADFBA419A195CD00E9B44E /* CatchCresh.mm in Sources */ = {isa = PBXBuildFile; fileRef = AAADFBA319A195CD00E9B44E /* CatchCresh.mm */; };
@@ -46,6 +47,7 @@
 		AAA954AB199C8145009E7170 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AAA954AD199C8145009E7170 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA954C5199C8145009E7170 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		AAAC4B6F19B5AD5500BDE356 /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
 		AAADFB9C19A195CD00E9B44E /* libCatchCresh.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCatchCresh.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAADFBA019A195CD00E9B44E /* CatchCresh-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CatchCresh-Prefix.pch"; sourceTree = "<group>"; };
 		AAADFBA119A195CD00E9B44E /* CatchCresh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatchCresh.h; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				AAADFBB119A195CD00E9B44E /* Supporting Files */,
+				AAAC4B6F19B5AD5500BDE356 /* Test.m */,
 			);
 			path = CatchCreshTests;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAAC4B7019B5AD5500BDE356 /* Test.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +417,7 @@
 				AAADFBB919A195CD00E9B44E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AAADFBBD19A195CD00E9B44E /* Build configuration list for PBXNativeTarget "CatchCreshTests" */ = {
 			isa = XCConfigurationList;
@@ -421,6 +426,7 @@
 				AAADFBBB19A195CD00E9B44E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

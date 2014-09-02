@@ -23,25 +23,26 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 
 
 static NSDate *dateError;
+static NSObject<crashDelegate> *delegate;
 
-+ (void)crashCatch{
-    
++ (void)crashCatchWithDeleate:(id<crashDelegate>)_delegate{
+    delegate = _delegate;
     NSSetUncaughtExceptionHandler (&UncaughtExceptionHandler);
     
-    signal(1, crashHandler);
-    signal(2, crashHandler);
-    signal(3, crashHandler);
-    signal(4, crashHandler);
+    signal(1, crashHandler);//程序挂起
+    signal(2, crashHandler);//程序中断
+    signal(3, crashHandler);//退出
+    signal(4, crashHandler);//非法指令
     signal(5, crashHandler);
-    signal(6, crashHandler);
+    signal(6, crashHandler);//意外中止(因程序错误)
     signal(7, crashHandler);
-    signal(8, crashHandler);
-    signal(9, crashHandler);
-    signal(10, crashHandler);
-    signal(11, crashHandler);
-    signal(12, crashHandler);
-    signal(13, crashHandler);
-    signal(14, crashHandler);
+    signal(8, crashHandler);//浮点数异常
+    signal(9, crashHandler);//被系统杀死
+    signal(10, crashHandler);//总线错误
+    signal(11, crashHandler);//内存段违规
+    signal(12, crashHandler);//错误的系统参数调用
+    signal(13, crashHandler);//读写通道不存在
+    signal(14, crashHandler);//闹钟
     signal(15, crashHandler);
     signal(16, crashHandler);
     signal(17, crashHandler);
@@ -114,7 +115,7 @@ void crashHandler(int signal){
             str = @"其它";
             break;
     }
-    NSLog(@"这个回调了 %i %@", signal, str);
+//    NSLog(@"这个回调了 %i %@", signal, str);
     
     int32_t exceptionCount = OSAtomicIncrement32(&UncaughtExceptionCount);
     
@@ -152,7 +153,11 @@ void crashHandler(int signal){
 }
 
 - (void)handleException:(NSException *)exception{
-    [CatchCresh saveFileWithError:exception];
+    if (delegate && [delegate respondsToSelector:@selector(catchException:)]) {
+        [delegate catchException:exception];
+    }else{
+        [CatchCresh saveFileWithError:exception];
+    }
 }
 
 + (void)saveFileWithError:(NSException*)exception{
