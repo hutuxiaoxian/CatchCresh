@@ -25,19 +25,19 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 static NSDate *dateError;
 static NSObject<crashDelegate> *delegate;
 
-+ (void)crashCatchWithDeleate:(id<crashDelegate>)_delegate{
++ (void)crashCatchWithDelegate:(id<crashDelegate>)_delegate{
     delegate = _delegate;
     NSSetUncaughtExceptionHandler (&UncaughtExceptionHandler);
     
-    signal(1, crashHandler);//程序挂起
-    signal(2, crashHandler);//程序中断
-    signal(3, crashHandler);//退出
-    signal(4, crashHandler);//非法指令
-    signal(5, crashHandler);
-    signal(6, crashHandler);//意外中止(因程序错误)
-    signal(7, crashHandler);
-    signal(8, crashHandler);//浮点数异常
-    signal(9, crashHandler);//被系统杀死
+    signal( 1, crashHandler);//程序挂起
+    signal( 2, crashHandler);//程序中断
+    signal( 3, crashHandler);//退出
+    signal( 4, crashHandler);//非法指令
+    signal( 5, crashHandler);
+    signal( 6, crashHandler);//意外中止(因程序错误)
+    signal( 7, crashHandler);
+    signal( 8, crashHandler);//浮点数异常
+    signal( 9, crashHandler);//被系统杀死
     signal(10, crashHandler);//总线错误
     signal(11, crashHandler);//内存段违规
     signal(12, crashHandler);//错误的系统参数调用
@@ -65,9 +65,11 @@ static NSObject<crashDelegate> *delegate;
 void UncaughtExceptionHandler(NSException *exception) {
     //    NSArray *arr = [exception callStackSymbols];
     
-    [CatchCresh saveFileWithError:exception];
-    
-    
+    if (delegate && [delegate respondsToSelector:@selector(catchException:)]) {
+        [delegate catchException:exception];
+    }else{
+        [CatchCresh saveFileWithError:exception];
+    }
 }
 
 
@@ -115,7 +117,7 @@ void crashHandler(int signal){
             str = @"其它";
             break;
     }
-//    NSLog(@"这个回调了 %i %@", signal, str);
+    NSLog(@"这个回调了 %i %@", signal, str);
     
     int32_t exceptionCount = OSAtomicIncrement32(&UncaughtExceptionCount);
     
@@ -129,10 +131,9 @@ void crashHandler(int signal){
         NSException *exception = [NSException
                                   exceptionWithName:UncaughtExceptionHandlerSignalExceptionName
                                   reason:[NSString stringWithFormat:@"错误代码:%i , %@", signal, str]
-                                  userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:signal] forKey:UncaughtExceptionHandlerSignalKey]];
+                                  userInfo:userInfo];
         
         [[[CatchCresh alloc] init] performSelectorOnMainThread:@selector(handleException:) withObject:exception waitUntilDone:YES];
-        
     }
     
 }
@@ -219,23 +220,23 @@ void crashHandler(int signal){
 }
 
 //启动时上传文件
-+ (void)updataErrorFile{
-    NSArray *arrf = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-    NSString *path = [arrf objectAtIndex:0];
-    path = [path stringByAppendingPathComponent:@"CreshLogs"];
-    NSFileManager *fm = [NSFileManager defaultManager];
-    
-    NSError *err;
-    NSArray *arrFile = [fm contentsOfDirectoryAtPath:path error:&err];
-    if (!err) {
-        //上传文件
-        for (NSString*fileName in arrFile) {
-            NSString *fp = [path stringByAppendingPathComponent:fileName];
-            NSData *dataFile = [NSData dataWithContentsOfFile:fp];
-            
-        }
-    }
-    
-}
+//+ (void)updataErrorFile{
+//    NSArray *arrf = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+//    NSString *path = [arrf objectAtIndex:0];
+//    path = [path stringByAppendingPathComponent:@"CreshLogs"];
+//    NSFileManager *fm = [NSFileManager defaultManager];
+//    
+//    NSError *err;
+//    NSArray *arrFile = [fm contentsOfDirectoryAtPath:path error:&err];
+//    if (!err) {
+//        //上传文件
+//        for (NSString*fileName in arrFile) {
+//            NSString *fp = [path stringByAppendingPathComponent:fileName];
+//            NSData *dataFile = [NSData dataWithContentsOfFile:fp];
+//            
+//        }
+//    }
+//    
+//}
 
 @end
